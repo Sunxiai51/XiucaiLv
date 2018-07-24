@@ -1,11 +1,10 @@
 /target/
 /bin/
 /.settings/
-.classpath
-/eclipse-workspace/
 
 **/target/**
 **/.settings/**
 **/bin/**
 
-**/.project
+.classpath
+.project
