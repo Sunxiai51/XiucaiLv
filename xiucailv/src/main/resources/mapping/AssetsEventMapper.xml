@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunveee.xiucailv.dao.AssetsEventMapper">
+  <resultMap id="BaseResultMap" type="com.sunveee.xiucailv.domain.AssetsEvent">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="assets_event_code" jdbcType="VARCHAR" property="assetsEventCode" />
+    <result column="event_time" jdbcType="TIMESTAMP" property="eventTime" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+    <result column="amount" jdbcType="BIGINT" property="amount" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, assets_event_code, event_time, title, description, user_code, amount, gmt_create, 
+    gmt_update
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from assets_event
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from assets_event
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sunveee.xiucailv.domain.AssetsEvent">
+    insert into assets_event (id, assets_event_code, event_time, 
+      title, description, user_code, 
+      amount, gmt_create, gmt_update
+      )
+    values (#{id,jdbcType=BIGINT}, #{assetsEventCode,jdbcType=VARCHAR}, #{eventTime,jdbcType=TIMESTAMP}, 
+      #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sunveee.xiucailv.domain.AssetsEvent">
+    insert into assets_event
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="assetsEventCode != null">
+        assets_event_code,
+      </if>
+      <if test="eventTime != null">
+        event_time,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="userCode != null">
+        user_code,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtUpdate != null">
+        gmt_update,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="assetsEventCode != null">
+        #{assetsEventCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eventTime != null">
+        #{eventTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null">
+        #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null">
+        #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sunveee.xiucailv.domain.AssetsEvent">
+    update assets_event
+    <set>
+      <if test="assetsEventCode != null">
+        assets_event_code = #{assetsEventCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eventTime != null">
+        event_time = #{eventTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null">
+        user_code = #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null">
+        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sunveee.xiucailv.domain.AssetsEvent">
+    update assets_event
+    set assets_event_code = #{assetsEventCode,jdbcType=VARCHAR},
+      event_time = #{eventTime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      user_code = #{userCode,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=BIGINT},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

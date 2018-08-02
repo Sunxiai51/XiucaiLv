@@ -21,7 +21,7 @@ public class TestMyBatis extends BaseTest {
 
     @Test
     public void test1() {
-        User user = userService.getUserById(1); // 查询id为1的用户
+        User user = userService.getUserById(1L); // 查询id为1的用户
         LogUtil.info(logger, "查询到id为1的用户,user={0}", user);
 
         List<User> userPage = userService.getUserPage(1, 2); // 按照每页两条数据查询第二页用户

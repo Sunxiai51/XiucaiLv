@@ -2,20 +2,20 @@ package com.sunveee.xiucailv.domain;
 
 import java.util.Date;
 
-public class User {
+public class Account {
     private Long id;
+
+    private String accountCode;
 
     private String userCode;
 
     private String name;
 
-    private String loginName;
-
-    private String loginPassword;
-
-    private String loginPasswordSalt;
+    private String accountNo;
 
     private String type;
+
+    private String description;
 
     private String status;
 
@@ -29,6 +29,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getAccountCode() {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode == null ? null : accountCode.trim();
     }
 
     public String getUserCode() {
@@ -47,28 +55,12 @@ public class User {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getLoginName() {
-        return loginName;
+    public String getAccountNo() {
+        return accountNo;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName == null ? null : loginName.trim();
-    }
-
-    public String getLoginPassword() {
-        return loginPassword;
-    }
-
-    public void setLoginPassword(String loginPassword) {
-        this.loginPassword = loginPassword == null ? null : loginPassword.trim();
-    }
-
-    public String getLoginPasswordSalt() {
-        return loginPasswordSalt;
-    }
-
-    public void setLoginPasswordSalt(String loginPasswordSalt) {
-        this.loginPasswordSalt = loginPasswordSalt == null ? null : loginPasswordSalt.trim();
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo == null ? null : accountNo.trim();
     }
 
     public String getType() {
@@ -77,6 +69,14 @@ public class User {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     public String getStatus() {

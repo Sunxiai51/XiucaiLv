@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper          userMapper;
 
     @Override
-    public User getUserById(int userId) {
+    public User getUserById(Long userId) {
 
         LogUtil.info(logger, "开始查询数据库中id为{0}的用户", userId);
 

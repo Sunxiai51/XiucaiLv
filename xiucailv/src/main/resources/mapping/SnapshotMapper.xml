@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunveee.xiucailv.dao.SnapshotMapper">
+  <resultMap id="BaseResultMap" type="com.sunveee.xiucailv.domain.Snapshot">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="snapshot_code" jdbcType="VARCHAR" property="snapshotCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="snapshot_time" jdbcType="TIMESTAMP" property="snapshotTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, snapshot_code, name, snapshot_time, remark, gmt_create, gmt_update
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from snapshot
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from snapshot
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sunveee.xiucailv.domain.Snapshot">
+    insert into snapshot (id, snapshot_code, name, 
+      snapshot_time, remark, gmt_create, 
+      gmt_update)
+    values (#{id,jdbcType=BIGINT}, #{snapshotCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{snapshotTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtUpdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sunveee.xiucailv.domain.Snapshot">
+    insert into snapshot
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="snapshotCode != null">
+        snapshot_code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="snapshotTime != null">
+        snapshot_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtUpdate != null">
+        gmt_update,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="snapshotCode != null">
+        #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="snapshotTime != null">
+        #{snapshotTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null">
+        #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sunveee.xiucailv.domain.Snapshot">
+    update snapshot
+    <set>
+      <if test="snapshotCode != null">
+        snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="snapshotTime != null">
+        snapshot_time = #{snapshotTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null">
+        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sunveee.xiucailv.domain.Snapshot">
+    update snapshot
+    set snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      snapshot_time = #{snapshotTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
