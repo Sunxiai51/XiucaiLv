@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="logPath" value="logs"/>
+    <property name="logName" value="xiucailv-web"/>
+    <property name="logPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5p] [%X{THREAD_ID}] - %logger{5} - %msg%n"/>
+    <property name="beecloudStdoutLogPattern" value="%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%X{THREAD_ID}]) %highlight(%-5level) %boldMagenta(%logger-%line) - %cyan(%msg%n)"/>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${beecloudStdoutLogPattern}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+    <appender name="allAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${logPattern}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <file>${logPath}/${logName}/${logName}-stdout.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/backup/${logName}/${logName}-stdout.log.%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <MaxHistory>30</MaxHistory>
+            <maxFileSize>200MB</maxFileSize>
+        </rollingPolicy>
+    </appender>
+    <logger level="INFO" name="java"/>
+    <logger level="INFO" name="java.sql"/>
+    <logger level="INFO" name="com.alibaba.druid"/>
+    <logger level="INFO" name="org.springframework"/>
+    <logger level="WARN" name="springfox.documentation"/>
+    <logger level="INFO" name="org.apache"/>
+    <logger level="INFO" name="httpclient.wire"/>
+    <logger level="INFO" name="org.hibernate"/>
+    <logger level="INFO" name="com.zaxxer.hikari"/>
+    <logger level="INFO" name="org.springframework.security"/>
+    <root level="DEBUG">
+        <appender-ref ref="stdout" />
+<!--        <appender-ref ref="allAppender" />-->
+    </root>
+</configuration>
