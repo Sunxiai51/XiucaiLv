@@ -3,10 +3,10 @@
     <property name="logPath" value="logs"/>
     <property name="logName" value="xiucailv-web"/>
     <property name="logPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5p] [%X{THREAD_ID}] - %logger{5} - %msg%n"/>
-    <property name="beecloudStdoutLogPattern" value="%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%X{THREAD_ID}]) %highlight(%-5level) %boldMagenta(%logger-%line) - %cyan(%msg%n)"/>
+    <property name="stdoutLogPattern" value="%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%X{THREAD_ID}]) %highlight(%-5level) %boldMagenta(%logger-%line) - %cyan(%msg%n)"/>
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>${beecloudStdoutLogPattern}</pattern>
+            <pattern>${stdoutLogPattern}</pattern>
             <charset>utf8</charset>
         </encoder>
     </appender>
