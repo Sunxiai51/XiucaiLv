@@ -10,3 +10,4 @@
 .project
 .gitignore
 /logs/
+/xiucailv-web/src/test/resources/test-data/

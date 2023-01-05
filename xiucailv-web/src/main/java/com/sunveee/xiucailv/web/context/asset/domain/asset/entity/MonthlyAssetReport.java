@@ -28,7 +28,7 @@ public class MonthlyAssetReport {
     public int year;
     public int month;
     private Currency currency;
-    private String userid;
+    private String username;
 
     @Builder.Default
     private boolean calculated = false;
@@ -64,12 +64,12 @@ public class MonthlyAssetReport {
         this.assetSnapshots = new ArrayList<>(assetItemCodeSet.size());
         assetItemCodeSet.forEach(assetItemCode -> {
             AssetSnapshot assetSnapshot = assetSnapshots.stream().filter(x -> x.getAssetItemCode().equals(assetItemCode))
-                    .filter(x -> x.getTime().getYear() == year
-                            && x.getTime().getMonth() == month
+                    .filter(x -> x.year() == year
+                            && x.month() == month
                             && x.getCurrency().getCurrencyCode().equals(currency.getCurrencyCode())
-                            && x.getUserid().equals(userid)
+                            && x.getUsername().equals(username)
                     )
-                    .max((o1, o2) -> (int) (o1.getTime().getTimestamp() - o2.getTime().getTimestamp())).get();
+                    .max((o1, o2) -> (int) (o1.day() - o2.day())).get();
             this.assetSnapshots.add(assetSnapshot);
         });
     }
@@ -93,17 +93,16 @@ public class MonthlyAssetReport {
 
     private void debtStatistics() {
         LocalDateTime thisMonthLastDay = LocalDateTime.of(this.getYear(), this.getMonth(), 1, 0, 0, 0, 0).plusMonths(1);
-        LocalDateTime secondMonthLastDay = thisMonthLastDay.plusMonths(1);
 
         long totalDebtBalance = 0, debtBalanceIn1month = 0, debtBalanceIn3month = 0, debtBalanceAfter3month = 0;
         for (AssetSnapshot assetSnapshot : assetSnapshots) {
             if (assetSnapshot.getAssetItemType() == AssetItem.AssetItemType.DEBT) {
                 totalDebtBalance += assetSnapshot.getBalance();
                 for (AssetSnapshot.DebtExt.RepayPlanItem repayPlanItem : assetSnapshot.debtExt().getRepayPlan()) {
-                    if (repayPlanItem.getRepayDate() < LocalDateTimeTransferUtils.toTimestamp(thisMonthLastDay.plusMonths(1))) {
+                    if (repayPlanItem.repayTimestamp() < LocalDateTimeTransferUtils.toTimestamp(thisMonthLastDay.plusMonths(1))) {
                         debtBalanceIn1month += repayPlanItem.getBalance();
                     }
-                    if (repayPlanItem.getRepayDate() < LocalDateTimeTransferUtils.toTimestamp(thisMonthLastDay.plusMonths(3))) {
+                    if (repayPlanItem.repayTimestamp() < LocalDateTimeTransferUtils.toTimestamp(thisMonthLastDay.plusMonths(3))) {
                         debtBalanceIn3month += repayPlanItem.getBalance();
                     } else {
                         debtBalanceAfter3month += repayPlanItem.getBalance();
