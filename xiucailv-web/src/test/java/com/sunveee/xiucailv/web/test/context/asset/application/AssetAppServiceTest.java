@@ -19,7 +19,7 @@ import java.io.FileNotFoundException;
  * @date 2023/1/5 20:26
  */
 @Transactional
-@Rollback(value = true)
+@Rollback(value = false)
 @SpringBootTest(classes = XiucaiLvWebMain.class)
 public class AssetAppServiceTest {
     @Autowired

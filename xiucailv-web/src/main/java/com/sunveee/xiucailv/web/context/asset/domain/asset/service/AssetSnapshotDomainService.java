@@ -28,7 +28,7 @@ public class AssetSnapshotDomainService {
         }
         for (AssetSnapshot assetSnapshot : assetSnapshots) {
             assetSnapshot.validate();
-            assetSnapshotJdbcRepository.saveOrUpdateByCode(assetSnapshot);
+            assetSnapshotJdbcRepository.save(assetSnapshot);
         }
 
     }

@@ -1,7 +1,9 @@
 package com.sunveee.xiucailv.web.context.asset.domain.asset.repository;
 
-import com.sunveee.framework.common.utils.json.JSONUtils;
 import com.sunveee.xiucailv.web.context.asset.domain.asset.entity.AssetSnapshot;
+import com.sunveee.xiucailv.web.context.asset.domain.asset.repository.dao.AssetSnapshotDao;
+import com.sunveee.xiucailv.web.context.asset.domain.asset.repository.po.AssetSnapshotPO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,8 +14,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class AssetSnapshotJdbcRepository {
+    @Autowired
+    private AssetSnapshotDao assetSnapshotDao;
 
-    public void saveOrUpdateByCode(AssetSnapshot assetSnapshot) {
-        System.out.println("save assetSnapshot: " + JSONUtils.toJSONString(assetSnapshot));
+    public void save(AssetSnapshot assetSnapshot) {
+        assetSnapshotDao.save(AssetSnapshotPO.fromDomain(assetSnapshot));
     }
 }

@@ -55,8 +55,8 @@ public class AssetSnapshot {
         BizAssertUtil.hasText(assetItemCode, "assetItemCode cannot be null");
         BizAssertUtil.hasText(date, "date cannot be null");
         BizAssertUtil.notNull(currency, "currency cannot be null");
-        // BizAssertUtil.notNull(assetItemType, "assetItemType cannot be null");
-        // BizAssertUtil.hasText(username, "username cannot be null");
+        BizAssertUtil.notNull(assetItemType, "assetItemType cannot be null");
+        BizAssertUtil.hasText(username, "username cannot be null");
 
     }
 
@@ -73,6 +73,11 @@ public class AssetSnapshot {
     public int day() {
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
         return localDate.getDayOfMonth();
+    }
+
+    public void fillWithAssetItem(AssetItem assetItem) {
+        this.setAssetItemType(assetItem.getType());
+        this.setUsername(assetItem.getUsername());
     }
 
 

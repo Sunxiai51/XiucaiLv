@@ -1,5 +1,6 @@
 package com.sunveee.xiucailv.web.context.asset.application;
 
+import com.sunveee.framework.common.exceptions.utils.BizAssertUtil;
 import com.sunveee.xiucailv.web.context.asset.application.handler.CSVReader;
 import com.sunveee.xiucailv.web.context.asset.domain.asset.entity.AssetItem;
 import com.sunveee.xiucailv.web.context.asset.domain.asset.entity.AssetSnapshot;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * AssetAppService
@@ -29,7 +31,7 @@ public class AssetAppService {
     @Transactional(rollbackFor = Exception.class)
     public void importAssetItem(String csvFilePath) {
         final File csvFile = new File(csvFilePath);
-        List<AssetItem> assetItems = null;
+        List<AssetItem> assetItems;
         try {
             assetItems = CSVReader.readAssetItemFromCsv(new FileInputStream(csvFile));
         } catch (Exception e) {
@@ -42,9 +44,14 @@ public class AssetAppService {
     public void importAssetSnapshot(String csvFilePath, String date) {
         List<AssetItem> assetItems = assetItemDomainService.getAllAssetItems();
         final File csvFile = new File(csvFilePath);
-        List<AssetSnapshot> assetSnapshots = null;
+        List<AssetSnapshot> assetSnapshots;
         try {
             assetSnapshots = CSVReader.readAssetSnapshotFromCsv(new FileInputStream(csvFile), date);
+            assetSnapshots.forEach(x -> {
+                Optional<AssetItem> assetItem = assetItems.stream().filter(item -> item.getCode().equals(x.getAssetItemCode())).findAny();
+                BizAssertUtil.isTrue(assetItem.isPresent(), "unknown AssetSnapshot's assetItemCode", x.getAssetItemCode());
+                x.fillWithAssetItem(assetItem.get());
+            });
         } catch (Exception e) {
             throw new RuntimeException(String.format("read AssetSnapshot from csvFile[%s] with date[%s] exception", csvFilePath, date), e);
         }
