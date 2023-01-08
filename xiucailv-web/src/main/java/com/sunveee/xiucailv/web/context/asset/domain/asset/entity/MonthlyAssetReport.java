@@ -2,6 +2,7 @@ package com.sunveee.xiucailv.web.context.asset.domain.asset.entity;
 
 import com.sunveee.framework.common.exceptions.utils.BizAssertUtil;
 import com.sunveee.framework.common.utils.datetime.LocalDateTimeTransferUtils;
+import com.sunveee.framework.common.utils.json.JSONUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -116,6 +117,12 @@ public class MonthlyAssetReport {
                 .debtBalanceIn3month(debtBalanceIn3month)
                 .debtBalanceAfter3month(debtBalanceAfter3month)
                 .build();
+    }
+
+    public void print() {
+        System.out.printf("用户%s %s年%s月 资产月报(%s)%n", username, year, month, currency.getCurrencyCode());
+        System.out.printf("  资产统计: %s%n", JSONUtils.toJSONString(this.getAssetStatistics()));
+        System.out.printf("  负债统计: %s%n", JSONUtils.toJSONString(this.getDebtStatistics()));
     }
 
     @Data

@@ -6,6 +6,9 @@ import com.sunveee.xiucailv.web.context.asset.domain.asset.repository.po.AssetSn
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * AssetSnapshotJdbcRepository
  *
@@ -19,5 +22,10 @@ public class AssetSnapshotJdbcRepository {
 
     public void save(AssetSnapshot assetSnapshot) {
         assetSnapshotDao.save(AssetSnapshotPO.fromDomain(assetSnapshot));
+    }
+
+    public List<AssetSnapshot> findByDateStartsWithAndUsername(String datePrefix, String username) {
+        return assetSnapshotDao.findByDateStartsWithAndUsername(datePrefix, username)
+                .stream().map(AssetSnapshotPO::toDomain).collect(Collectors.toList());
     }
 }

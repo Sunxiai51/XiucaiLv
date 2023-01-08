@@ -4,6 +4,8 @@ import com.sunveee.xiucailv.web.context.asset.domain.asset.repository.po.AssetSn
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * AssetSnapshotDao
  *
@@ -12,5 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AssetSnapshotDao extends JpaRepository<AssetSnapshotPO, Long> {
+
+    List<AssetSnapshotPO> findByDateStartsWithAndUsername(String date, String username);
 
 }

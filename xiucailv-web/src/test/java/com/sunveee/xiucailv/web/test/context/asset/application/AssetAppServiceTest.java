@@ -34,6 +34,11 @@ public class AssetAppServiceTest {
     @Test
     public void importAssetSnapshot() throws FileNotFoundException {
         String path = ResourceUtils.getURL("classpath:").getPath();
-        assetAppService.importAssetSnapshot(String.join(File.separator, path, "test-data/51_asset_snapshot_20230103.csv"), "20230103");
+        assetAppService.importAssetSnapshot(String.join(File.separator, path, "test-data/51_asset_snapshot_20230103.csv"), "20221130");
+    }
+
+    @Test
+    public void generateMonthlyAssetReport() {
+        assetAppService.generateMonthlyAssetReport(2022, 11, "51");
     }
 }

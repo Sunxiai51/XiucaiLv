@@ -12,6 +12,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -48,7 +49,12 @@ public class AssetSnapshot {
 
     public DebtExt debtExt() {
         BizAssertUtil.isTrue(this.assetItemType == AssetItem.AssetItemType.DEBT, "type must match DEBT when execute debtExt()");
-        return JSONUtils.parseObject(ext, DebtExt.class);
+        return DebtExt.parse(this.ext);
+    }
+
+    public InvestExt investExt() {
+        BizAssertUtil.isTrue(this.assetItemType == AssetItem.AssetItemType.INVEST, "type must match INVEST when execute investExt()");
+        return InvestExt.parse(this.ext);
     }
 
     public void validate() {
@@ -91,6 +97,17 @@ public class AssetSnapshot {
     public static class DebtExt {
         private List<RepayPlanItem> repayPlan;
 
+        public static DebtExt parse(String ext) {
+            DebtExt result = JSONUtils.parseObject(ext, DebtExt.class);
+            if (null == result) {
+                result = DebtExt.builder().build();
+            }
+            if (null == result.getRepayPlan()) {
+                result.setRepayPlan(new ArrayList<>());
+            }
+            return result;
+        }
+
         @Data
         @Builder
         @NoArgsConstructor
@@ -117,7 +134,16 @@ public class AssetSnapshot {
         /**
          * 收益(浮动)
          */
-        private double profit;
+        @Builder.Default
+        private double profit = 0d;
+
+        public static InvestExt parse(String ext) {
+            InvestExt result = JSONUtils.parseObject(ext, InvestExt.class);
+            if (null == result) {
+                result = InvestExt.builder().build();
+            }
+            return result;
+        }
 
     }
 

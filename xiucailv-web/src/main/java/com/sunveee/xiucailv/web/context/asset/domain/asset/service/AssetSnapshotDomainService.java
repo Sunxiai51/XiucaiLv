@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -31,5 +33,10 @@ public class AssetSnapshotDomainService {
             assetSnapshotJdbcRepository.save(assetSnapshot);
         }
 
+    }
+
+    public List<AssetSnapshot> queryByYearMonthUsername(int year, int month, String username) {
+        String yearMonth = LocalDate.of(year, month, 1).format(DateTimeFormatter.ofPattern("yyyyMM"));
+        return assetSnapshotJdbcRepository.findByDateStartsWithAndUsername(yearMonth, username);
     }
 }
