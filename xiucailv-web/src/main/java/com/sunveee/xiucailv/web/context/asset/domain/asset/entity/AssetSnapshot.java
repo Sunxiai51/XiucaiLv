@@ -3,11 +3,13 @@ package com.sunveee.xiucailv.web.context.asset.domain.asset.entity;
 import com.sunveee.framework.common.exceptions.utils.BizAssertUtil;
 import com.sunveee.framework.common.utils.datetime.LocalDateTimeTransferUtils;
 import com.sunveee.framework.common.utils.json.JSONUtils;
+import com.sunveee.xiucailv.web.common.utils.MoneyUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * AssetSnapshot
@@ -29,7 +32,7 @@ import java.util.List;
 public class AssetSnapshot {
     private String date;
     private String assetItemCode;
-    private double balance;
+    private long balance;
     private Currency currency;
     private String ext;
 
@@ -37,14 +40,17 @@ public class AssetSnapshot {
     private AssetItem.AssetItemType assetItemType;
     private String username;
 
-    public static AssetSnapshot fromCsvRecord(CSVRecord csvRecord, String date) {
-        return AssetSnapshot.builder()
+    public static Optional<AssetSnapshot> fromCsvRecord(CSVRecord csvRecord, String date) {
+        if (StringUtils.isBlank(csvRecord.get("asset_item_code"))) {
+            return Optional.empty();
+        }
+        return Optional.of(AssetSnapshot.builder()
                 .date(date)
                 .assetItemCode(csvRecord.get("asset_item_code"))
-                .balance(Double.parseDouble(csvRecord.get(String.join("", date, "balance"))))
+                .balance(MoneyUtils.yuan2fen(Double.parseDouble(csvRecord.get(String.join("", date, "balance")))))
                 .currency(Currency.getInstance(csvRecord.get("currency")))
                 .ext(csvRecord.get(String.join("", date, "ext")))
-                .build();
+                .build());
     }
 
     public DebtExt debtExt() {
@@ -114,7 +120,7 @@ public class AssetSnapshot {
         @AllArgsConstructor
         public static class RepayPlanItem {
             private String repayDate;
-            private double balance;
+            private long balance;
 
             public long repayTimestamp() {
                 LocalDateTime localDateTime = LocalDateTime.parse(repayDate + "000000", DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
@@ -135,7 +141,7 @@ public class AssetSnapshot {
          * 收益(浮动)
          */
         @Builder.Default
-        private double profit = 0d;
+        private long profit = 0;
 
         public static InvestExt parse(String ext) {
             InvestExt result = JSONUtils.parseObject(ext, InvestExt.class);

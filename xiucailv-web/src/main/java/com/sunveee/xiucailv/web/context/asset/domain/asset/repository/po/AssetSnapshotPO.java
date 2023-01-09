@@ -28,8 +28,8 @@ public class AssetSnapshotPO extends BaseJpaEntity {
     private String date;
     @Column(columnDefinition = "varchar(32) COMMENT '资产项编号'", nullable = false, updatable = false)
     private String assetItemCode;
-    @Column(columnDefinition = "decimal(20,2) COMMENT '资产金额'", nullable = false, updatable = false)
-    private Double balance;
+    @Column(columnDefinition = "bigint(20) COMMENT '资产金额'", nullable = false, updatable = false)
+    private Long balance;
     @Column(columnDefinition = "varchar(6) COMMENT '资产金额币种'", nullable = false, updatable = false)
     private String currencyCode;
     @Column(columnDefinition = "text COMMENT '扩展字段'", updatable = false)

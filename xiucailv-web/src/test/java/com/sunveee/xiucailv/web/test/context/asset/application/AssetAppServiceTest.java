@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
@@ -27,18 +25,20 @@ public class AssetAppServiceTest {
 
     @Test
     public void importAssetItem() throws FileNotFoundException {
-        String path = ResourceUtils.getURL("classpath:").getPath();
-        assetAppService.importAssetItem(String.join(File.separator, path, "test-data/51_asset_item.csv"));
+        String path = "/Users/veee/code/git_repository_51/XiucaiLv/xiucailv-web/src/test/resources/test-data/51_asset_item.csv";
+        assetAppService.importAssetItem(path);
     }
 
     @Test
     public void importAssetSnapshot() throws FileNotFoundException {
-        String path = ResourceUtils.getURL("classpath:").getPath();
-        assetAppService.importAssetSnapshot(String.join(File.separator, path, "test-data/51_asset_snapshot_20230103.csv"), "20221130");
+        String path = "/Users/veee/code/git_repository_51/XiucaiLv/xiucailv-web/src/test/resources/test-data/51_asset_snapshot_20230103.csv";
+        assetAppService.importAssetSnapshot(path, "20221130");
+        assetAppService.importAssetSnapshot(path, "20230103");
     }
 
     @Test
     public void generateMonthlyAssetReport() {
-        assetAppService.generateMonthlyAssetReport(2022, 11, "51");
+        assetAppService.generateMonthlyAssetReport(2022, 12, "51", "20230103");
     }
+
 }

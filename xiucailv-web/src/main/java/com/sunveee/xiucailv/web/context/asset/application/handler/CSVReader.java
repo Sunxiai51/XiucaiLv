@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CSVReader {
 
@@ -45,8 +46,8 @@ public class CSVReader {
                     .setHeader(csvHeader).setSkipHeaderRecord(false).setAllowDuplicateHeaderNames(false).setIgnoreEmptyLines(true)
                     .build().parse(csvReader);) {
                 for (CSVRecord csvRecord : csvParser) {
-                    AssetSnapshot assetSnapshot = AssetSnapshot.fromCsvRecord(csvRecord, date);
-                    result.add(assetSnapshot);
+                    Optional<AssetSnapshot> assetSnapshot = AssetSnapshot.fromCsvRecord(csvRecord, date);
+                    assetSnapshot.ifPresent(result::add);
                 }
             }
             return result;

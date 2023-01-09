@@ -4,9 +4,9 @@ import com.sunveee.framework.common.exceptions.utils.BizAssertUtil;
 import com.sunveee.xiucailv.web.context.asset.application.handler.CSVReader;
 import com.sunveee.xiucailv.web.context.asset.domain.asset.entity.AssetItem;
 import com.sunveee.xiucailv.web.context.asset.domain.asset.entity.AssetSnapshot;
-import com.sunveee.xiucailv.web.context.asset.domain.asset.entity.MonthlyAssetReport;
 import com.sunveee.xiucailv.web.context.asset.domain.asset.service.AssetItemDomainService;
 import com.sunveee.xiucailv.web.context.asset.domain.asset.service.AssetSnapshotDomainService;
+import com.sunveee.xiucailv.web.context.asset.domain.report.entity.MonthlyAssetReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,8 +63,8 @@ public class AssetAppService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void generateMonthlyAssetReport(int year, int month, String username) {
-        List<AssetSnapshot> assetSnapshots = assetSnapshotDomainService.queryByYearMonthUsername(year, month, username);
+    public void generateMonthlyAssetReport(int year, int month, String username, String assetSnapshotDate) {
+        List<AssetSnapshot> assetSnapshots = assetSnapshotDomainService.queryByDateAndUsername(assetSnapshotDate, username);
         Set<Currency> currencySet = assetSnapshots.stream().map(AssetSnapshot::getCurrency).collect(Collectors.toSet());
         for (Currency currency : currencySet) {
             MonthlyAssetReport report = MonthlyAssetReport.builder()

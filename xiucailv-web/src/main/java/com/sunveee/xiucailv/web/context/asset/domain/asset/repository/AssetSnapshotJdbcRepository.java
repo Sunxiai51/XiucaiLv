@@ -28,4 +28,9 @@ public class AssetSnapshotJdbcRepository {
         return assetSnapshotDao.findByDateStartsWithAndUsername(datePrefix, username)
                 .stream().map(AssetSnapshotPO::toDomain).collect(Collectors.toList());
     }
+
+    public List<AssetSnapshot> findByDateAndUsername(String date, String username) {
+        return assetSnapshotDao.findByDateAndUsername(date, username)
+                .stream().map(AssetSnapshotPO::toDomain).collect(Collectors.toList());
+    }
 }

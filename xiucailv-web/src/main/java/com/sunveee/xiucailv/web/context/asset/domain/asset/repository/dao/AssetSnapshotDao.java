@@ -17,4 +17,5 @@ public interface AssetSnapshotDao extends JpaRepository<AssetSnapshotPO, Long> {
 
     List<AssetSnapshotPO> findByDateStartsWithAndUsername(String date, String username);
 
+    List<AssetSnapshotPO> findByDateAndUsername(String date, String username);
 }

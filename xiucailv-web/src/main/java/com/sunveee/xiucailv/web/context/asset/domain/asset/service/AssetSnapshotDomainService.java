@@ -39,4 +39,8 @@ public class AssetSnapshotDomainService {
         String yearMonth = LocalDate.of(year, month, 1).format(DateTimeFormatter.ofPattern("yyyyMM"));
         return assetSnapshotJdbcRepository.findByDateStartsWithAndUsername(yearMonth, username);
     }
+
+    public List<AssetSnapshot> queryByDateAndUsername(String date, String username) {
+        return assetSnapshotJdbcRepository.findByDateAndUsername(date, username);
+    }
 }

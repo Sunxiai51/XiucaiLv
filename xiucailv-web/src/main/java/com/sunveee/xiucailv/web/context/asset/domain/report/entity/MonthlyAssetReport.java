@@ -1,19 +1,19 @@
-package com.sunveee.xiucailv.web.context.asset.domain.asset.entity;
+package com.sunveee.xiucailv.web.context.asset.domain.report.entity;
 
 import com.sunveee.framework.common.exceptions.utils.BizAssertUtil;
 import com.sunveee.framework.common.utils.datetime.LocalDateTimeTransferUtils;
-import com.sunveee.framework.common.utils.json.JSONUtils;
+import com.sunveee.xiucailv.web.context.asset.domain.asset.entity.AssetItem;
+import com.sunveee.xiucailv.web.context.asset.domain.asset.entity.AssetSnapshot;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+import static com.sunveee.xiucailv.web.common.utils.MoneyUtils.fen2yuanString;
 
 /**
  * MonthlyAssetReport
@@ -50,29 +50,14 @@ public class MonthlyAssetReport {
 
 
     public void calculate(List<AssetSnapshot> assetSnapshots) {
-        // 初始化资产快照
-        initAssetSnapshots(assetSnapshots);
+        BizAssertUtil.notEmpty(assetSnapshots, "assetSnapshots cannot be empty");
+        this.assetSnapshots = assetSnapshots;
+
         // 资产统计
         assetStatistics();
         // 负债统计
         debtStatistics();
         this.calculated = true;
-    }
-
-    private void initAssetSnapshots(List<AssetSnapshot> assetSnapshots) {
-        BizAssertUtil.notEmpty(assetSnapshots, "assetSnapshots cannot be empty");
-        Set<String> assetItemCodeSet = assetSnapshots.stream().map(AssetSnapshot::getAssetItemCode).collect(Collectors.toSet());
-        this.assetSnapshots = new ArrayList<>(assetItemCodeSet.size());
-        assetItemCodeSet.forEach(assetItemCode -> {
-            AssetSnapshot assetSnapshot = assetSnapshots.stream().filter(x -> x.getAssetItemCode().equals(assetItemCode))
-                    .filter(x -> x.year() == year
-                            && x.month() == month
-                            && x.getCurrency().getCurrencyCode().equals(currency.getCurrencyCode())
-                            && x.getUsername().equals(username)
-                    )
-                    .max((o1, o2) -> (int) (o1.day() - o2.day())).get();
-            this.assetSnapshots.add(assetSnapshot);
-        });
     }
 
     private void assetStatistics() {
@@ -120,9 +105,15 @@ public class MonthlyAssetReport {
     }
 
     public void print() {
-        System.out.printf("用户%s %s年%s月 资产月报(%s)%n", username, year, month, currency.getCurrencyCode());
-        System.out.printf("  资产统计: %s%n", JSONUtils.toJSONString(this.getAssetStatistics()));
-        System.out.printf("  负债统计: %s%n", JSONUtils.toJSONString(this.getDebtStatistics()));
+        System.out.println(prettyPrint());
+    }
+
+    public String prettyPrint() {
+        return String.format("[%s - %s] %s年%s月 资产月报\n", username, currency.getCurrencyCode(), year, month) +
+                "\t资产统计\n" +
+                String.format("\t\t总资产 %s \t现金总额 %s \t理财总额 %s\n", fen2yuanString(this.getAssetStatistics().getTotal()), fen2yuanString(this.getAssetStatistics().getTotalCash()), fen2yuanString(this.getAssetStatistics().getTotalInvest())) +
+                "\t负债统计\n" +
+                String.format("\t\t总负债 %s \t短期负债 %s \t中期负债 %s \t长期负债 %s\n", fen2yuanString(-1 * this.getDebtStatistics().getTotalDebtBalance()), fen2yuanString(-1 * this.getDebtStatistics().getDebtBalanceIn1month()), fen2yuanString(-1 * this.getDebtStatistics().getDebtBalanceIn3month()), fen2yuanString(-1 * this.getDebtStatistics().getDebtBalanceAfter3month()));
     }
 
     @Data
@@ -139,7 +130,7 @@ public class MonthlyAssetReport {
          */
         private long totalCash;
         /**
-         * 理财资产总额
+         * 理财总额
          */
         private long totalInvest;
     }
@@ -154,15 +145,15 @@ public class MonthlyAssetReport {
          */
         private long totalDebtBalance;
         /**
-         * 一月内负债
+         * 一个月内负债（短期负债）
          */
         private long debtBalanceIn1month;
         /**
-         * 三个月内负债
+         * 三个月内负债（中期负债）
          */
         private long debtBalanceIn3month;
         /**
-         * 三个月外负债
+         * 三个月外负债（长期负债）
          */
         private long debtBalanceAfter3month;
     }
