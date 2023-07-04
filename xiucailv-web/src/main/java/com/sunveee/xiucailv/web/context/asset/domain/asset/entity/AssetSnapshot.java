@@ -47,7 +47,7 @@ public class AssetSnapshot {
         return Optional.of(AssetSnapshot.builder()
                 .date(date)
                 .assetItemCode(csvRecord.get("asset_item_code"))
-                .balance(MoneyUtils.yuan2fen(Double.parseDouble(csvRecord.get(String.join("", date, "balance")))))
+                .balance(MoneyUtils.yuan2fen(Double.parseDouble(csvRecord.get(String.join("", date, "balance")).replaceAll(",",""))))
                 .currency(Currency.getInstance(csvRecord.get("currency")))
                 .ext(csvRecord.get(String.join("", date, "ext")))
                 .build());
